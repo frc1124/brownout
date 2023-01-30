@@ -16,4 +16,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  //SparkMax IDS
+  public static final int CLAW_ID = 12; //not the correct id
+  public static final int ARM_STAGE_ONE = 13; //not the correct id
+  public static final int ARM_STAGE_TWO = 14; //not the correct id
+
 }
