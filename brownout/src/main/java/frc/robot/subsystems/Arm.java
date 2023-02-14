@@ -21,18 +21,18 @@ public class Arm extends SubsystemBase {
     }
 
     public void OpenOne() {
-        winchOne.set(0.75);
+        winchOne.set(1);
     }
 
     public void CloseOne() {
-        winchOne.set(-0.75);
+        winchOne.set(-1);
     }
 
     public void OpenTwo() {
-        winchTwo.set(0.75);
+        winchTwo.set(1);
     }
 
     public void CloseTwo() {
-        winchTwo.set(-0.75);
+        winchTwo.set(-1);
     }
 }

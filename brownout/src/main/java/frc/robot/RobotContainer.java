@@ -10,6 +10,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
+import frc.robot.subsystems.Pneumatics;
 
 import java.util.HashMap;
 
@@ -19,6 +20,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  public static Joystick j;
+  public static XboxController j;
   // The robot's subsystems and commands are defined here...
 
   //motors
@@ -62,12 +65,14 @@ public class RobotContainer {
   public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, true);
   public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, false);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Pneumatics
+  public Pneumatics pneumatics = new Pneumatics();
+  
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    j = new Joystick(0);
+    j = new XboxController(0);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -102,11 +107,12 @@ public class RobotContainer {
   }
   
   private void configureBindings() {
-    //getKey("botton right").whileHeld(new El_down(lift, Constants.Lift_BOTTOM_POINT));
+    //getKey("botton right").whileHeld(new El_down(lift, Constants.Lift_BOTTOM_POINT)); (sample)
+
   }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+    //An example command will be run in autonomous
     return (new TankCommandGroup(0, 0, Robot.rc));
   }
 }

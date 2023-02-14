@@ -18,20 +18,21 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
 
   }
+  
 
-  public static final int LEFTFRONT = 15; //incorrect
-  public static final int RIGHTFRONT = 15; //incorrect
-  public static final int LEFTBACK = 15; //incorrect
-  public static final int RIGHTBACK = 15; //incorrect
+  public static final int LEFTFRONT = 1; 
+  public static final int RIGHTFRONT = 4; 
+  public static final int LEFTBACK = 2; 
+  public static final int RIGHTBACK = 3; 
 
   //velocity
-  public static final double VEL_L_P = 1;
-  public static final double VEL_L_I = 1;
-  public static final double VEL_L_D = 1;
+  public static final double VEL_L_P = 0.01;
+  public static final double VEL_L_I = 0.01;
+  public static final double VEL_L_D = 0.01;
 
-  public static final double VEL_R_P = 1;
-  public static final double VEL_R_I = 1;
-  public static final double VEL_R_D = 1;
+  public static final double VEL_R_P = 0.01;
+  public static final double VEL_R_I = 0.01;
+  public static final double VEL_R_D = 0.01;
 
   //distance
   public static final double DIST_L_P = 1;
@@ -47,11 +48,11 @@ public final class Constants {
   //public static final double MAXANGULARSPEED = 0;
 
   public static final int WHEELRADIUS = 0;
-  public static final int ENCODERRESOLUTION = 42;
+  public static final int ENCODERRESOLUTION = 42; //i think this is wrong
   //SparkMax IDS
-  public static final int CLAW_ID = 12; //not the correct id
-  public static final int ARM_STAGE_ONE = 13; //not the correct id
-  public static final int ARM_STAGE_TWO = 14; //not the correct id
-  public static final int ARM_STAGE_THREE = 14; //not the correct id
+  public static final int CLAW_ID = 0; //not the correct id
+  public static final int ARM_STAGE_ONE = 0; //not the correct id
+  public static final int ARM_STAGE_TWO = 0; //not the correct id
+  public static final int ARM_STAGE_THREE = 0; //not the correct id
 
 }

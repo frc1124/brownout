@@ -52,8 +52,8 @@ public class PIDDrive extends PIDSubsystem{
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
-        encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
-
+        //encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
+        encoder.setAverageDepth(8);
         // encoder.reset();
     }
 
@@ -89,6 +89,11 @@ public class PIDDrive extends PIDSubsystem{
         
     public void set(double x) {
     motors.set(x);
+    }
+    
+    public double ret() {
+        return 1.0;
+
     }
     
 }

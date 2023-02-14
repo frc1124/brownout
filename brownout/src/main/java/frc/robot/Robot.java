@@ -5,9 +5,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.SolenoidFwd;
+import frc.robot.commands.TankCommandGroup;
+import frc.robot.subsystems.Pneumatics;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import frc.robot.commands.CompOff;
+import frc.robot.commands.CompOn;
+import javax.print.attribute.standard.PresentationDirection;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -16,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command autoCMD;
+  AnalogPotentiometer pressureTransducer;
   public static RobotContainer rc;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,6 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    PneumaticsControlModule pcm = new PneumaticsControlModule();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -75,11 +86,52 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.cancel();
     // }
+    double scale = 250, offset = -25;
+    //pressureTransducer = new AnalogPotentiometer(/* the AnalogIn port*/ 0, scale, offset);
+    //rc.pneumatics.solOff();
+    //rc.pneumatics.enableComp();
+    //SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
+    //SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
+    //SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
+    //SmartDashboard.putData("Compressor Off", new CompOff(rc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           .pneumatics));
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    //SmartDashboard.putNumber("PSI", pressureTransducer.get());
+
+    double velL = rc.j.getLeftY()*10;
+    double velR = rc.j.getRightY()*10;
+
+    SmartDashboard.putNumber("Joystick Y", velR);
+    
+    //double spin = rc.j.getX();
+    //double twist = rc.j.getTwist();
+
+    /* 
+    double vel2 = vel;
+    if (spin < -0.3) {
+      if (vel < 200000) {
+        vel+=200000;
+      } 
+      vel = -vel;
+    } else if(spin > 0.3) {
+      if (vel < 200000) {
+        vel+=200000;
+      }
+      vel2 = vel;
+      vel = -vel;
+    }
+    */
+
+    CommandScheduler.getInstance().schedule(new TankCommandGroup(
+      velL, 
+      velR, 
+      rc
+    ));  
+  }
 
   @Override
   public void testInit() {

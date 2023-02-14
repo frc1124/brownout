@@ -19,10 +19,10 @@ public class Claw extends SubsystemBase {
     }
 
     public void Open() {
-        clawMotor.set(0.1);
+        clawMotor.set(1);
     }
 
     public void Close() {
-        clawMotor.set(-0.1);
+        clawMotor.set(-1);
     }
 }
