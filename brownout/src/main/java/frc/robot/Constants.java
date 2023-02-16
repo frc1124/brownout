@@ -26,13 +26,13 @@ public final class Constants {
   public static final int RIGHTBACK = 3; 
 
   //velocity
-  public static final double VEL_L_P = 0.01;
-  public static final double VEL_L_I = 0.01;
-  public static final double VEL_L_D = 0.01;
+  public static final double VEL_L_P = 0.03;
+  public static final double VEL_L_I = 0.00;
+  public static final double VEL_L_D = 0.00;
 
-  public static final double VEL_R_P = 0.01;
-  public static final double VEL_R_I = 0.01;
-  public static final double VEL_R_D = 0.01;
+  public static final double VEL_R_P = 0.02;
+  public static final double VEL_R_I = 0.00;
+  public static final double VEL_R_D = 0.00;
 
   //distance
   public static final double DIST_L_P = 1;
@@ -47,8 +47,8 @@ public final class Constants {
   public static final double MAXSPEED = 0;
   //public static final double MAXANGULARSPEED = 0;
 
-  public static final int WHEELRADIUS = 0;
-  public static final int ENCODERRESOLUTION = 42; //i think this is wrong
+  public static final int WHEELRADIUS = 2;
+  public static final int ENCODERRESOLUTION = 4000; //i think this is wrong
   //SparkMax IDS
   public static final int CLAW_ID = 0; //not the correct id
   public static final int ARM_STAGE_ONE = 0; //not the correct id

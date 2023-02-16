@@ -17,7 +17,6 @@ import java.util.HashMap;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticHub;
@@ -62,7 +61,7 @@ public class RobotContainer {
   public final PIDController rightVController = new PIDController(
     Constants.VEL_R_P, Constants.VEL_R_I, Constants.VEL_R_D);
   
-  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, true);
+  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false);
   public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, false);
 
   // Pneumatics

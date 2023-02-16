@@ -102,10 +102,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //SmartDashboard.putNumber("PSI", pressureTransducer.get());
 
-    double velL = rc.j.getLeftY()*10;
-    double velR = rc.j.getRightY()*10;
+    double velL = Math.pow(rc.j.getLeftY(),3); // Speed given by encoder is RPM
+    double velR = Math.pow(rc.j.getRightY(),3);
 
-    SmartDashboard.putNumber("Joystick Y", velR);
+    SmartDashboard.putNumber("Joystick Y", velL);
     
     //double spin = rc.j.getX();
     //double twist = rc.j.getTwist();
@@ -127,8 +127,8 @@ public class Robot extends TimedRobot {
     */
 
     CommandScheduler.getInstance().schedule(new TankCommandGroup(
-      velL, 
-      velR, 
+      1000000, 
+      100000, 
       rc
     ));  
   }
