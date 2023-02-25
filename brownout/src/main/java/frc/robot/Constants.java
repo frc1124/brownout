@@ -21,18 +21,18 @@ public final class Constants {
   
 
   public static final int LEFTFRONT = 1; 
-  public static final int RIGHTFRONT = 4; 
+  public static final int RIGHTFRONT = 3; 
   public static final int LEFTBACK = 2; 
-  public static final int RIGHTBACK = 3; 
+  public static final int RIGHTBACK = 4; 
 
   //velocity
-  public static final double VEL_L_P = 0.03;
-  public static final double VEL_L_I = 0.00;
-  public static final double VEL_L_D = 0.00;
+  public static final double VEL_L_P = 0.01;
+  public static final double VEL_L_I = 0.01;
+  public static final double VEL_L_D = 0.01;
 
-  public static final double VEL_R_P = 0.02;
-  public static final double VEL_R_I = 0.00;
-  public static final double VEL_R_D = 0.00;
+  public static final double VEL_R_P = 0.015;
+  public static final double VEL_R_I = 0.01;
+  public static final double VEL_R_D = 0.01;
 
   //distance
   public static final double DIST_L_P = 1;
@@ -54,5 +54,10 @@ public final class Constants {
   public static final int ARM_STAGE_ONE = 0; //not the correct id
   public static final int ARM_STAGE_TWO = 0; //not the correct id
   public static final int ARM_STAGE_THREE = 0; //not the correct id
+
+  public static final double DRIVEkS = 0;
+  public static final double DRIVEkV = 0;
+  public static final double kMaxAcceleration = 0; //radians per second
+  public static final double kMaxVelocity = 0; // radians per second squared
 
 }

@@ -13,7 +13,7 @@ import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.Pneumatics;
 
 import java.util.HashMap;
-
+import edu.wpi.first.wpilibj.Encoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -44,8 +44,8 @@ public class RobotContainer {
   public final CANSparkMax rightFollower = new CANSparkMax(Constants.RIGHTBACK, MotorType.kBrushless);
 
   //encoders
-  public final RelativeEncoder leftEncoder = leftLeader.getEncoder();
-  public final RelativeEncoder rightEncoder = rightLeader.getEncoder();
+  public final Encoder leftEncoder = new Encoder(1, 2);
+  public final Encoder rightEncoder = new Encoder(3, 4);
 
   //motorcontrollers
   public final MotorControllerGroup lefts = new MotorControllerGroup(leftLeader, leftFollower);
@@ -62,7 +62,7 @@ public class RobotContainer {
     Constants.VEL_R_P, Constants.VEL_R_I, Constants.VEL_R_D);
   
   public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false);
-  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, false);
+  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true);
 
   // Pneumatics
   public Pneumatics pneumatics = new Pneumatics();

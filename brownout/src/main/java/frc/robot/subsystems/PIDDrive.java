@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
+import com.revrobotics.RelativeEncoder;
 
 public class PIDDrive extends PIDSubsystem{
 
-    public final RelativeEncoder encoder;
+    public final Encoder encoder;
 
     public final MotorControllerGroup motors;
     private final AHRS navx = new AHRS();
@@ -31,7 +32,7 @@ public class PIDDrive extends PIDSubsystem{
 
     private boolean isLeft;
 
-    public PIDDrive(MotorControllerGroup motors, RelativeEncoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft) {
+    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft) {
         super(controllerV);
         this.controllerV = controllerV;
         this.controllerD = controllerD;
@@ -53,7 +54,7 @@ public class PIDDrive extends PIDSubsystem{
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
         //encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
-        encoder.setAverageDepth(8);
+        encoder.setDistancePerPulse((Constants.WHEELRADIUS * Math.PI * 2) / encoder.getEncodingScale()); //operating frequency * 60 /maxrpm
         // encoder.reset();
     }
 
@@ -63,18 +64,18 @@ public class PIDDrive extends PIDSubsystem{
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        final double out = controllerD.calculate(encoder.getPosition(), setpoint);
+        final double out = controllerD.calculate(encoder.getDistance(), setpoint);
         double outFiltered = MathUtil.clamp(out, -8, 8);
         motors.setVoltage(outFiltered);
     }
 
     @Override
     protected double getMeasurement() {
-        return encoder.getPosition();
+        return encoder.getDistance();
     }
 
     public void useOutputV(double output, double setpoint) {
-        final double out = controllerV.calculate(encoder.getVelocity(), setpoint);
+        final double out = controllerV.calculate(encoder.getRate(), setpoint);
         double outFiltered = MathUtil.clamp(out, -8, 8);
         motors.setVoltage(outFiltered);
     }
@@ -84,7 +85,7 @@ public class PIDDrive extends PIDSubsystem{
     }
 
     public double getMeasurementV() {
-    return encoder.getVelocity();
+        return encoder.getDistance();
     }
         
     public void set(double x) {

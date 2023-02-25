@@ -5,9 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.commands.SolenoidFwd;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.Pneumatics;
@@ -15,7 +18,12 @@ import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.commands.CompOff;
 import frc.robot.commands.CompOn;
 import javax.print.attribute.standard.PresentationDirection;
-
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CameraServerCvJNI;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,7 +32,10 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
  * project.
  */
 public class Robot extends TimedRobot {
+  GenericEntry LeftVTracker;
+  //CameraServer cam;
   private Command autoCMD;
+  ShuffleboardTab tab;
   AnalogPotentiometer pressureTransducer;
   public static RobotContainer rc;
   /**
@@ -33,6 +44,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    tab = Shuffleboard.getTab("SmartDashboard");
+    // CameraServer.startAutomaticCapture();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     rc = new RobotContainer();
@@ -87,13 +100,16 @@ public class Robot extends TimedRobot {
     //   m_autonomousCommand.cancel();
     // }
     double scale = 250, offset = -25;
+
+    LeftVTracker = tab.add("LeftVelocity", 1).getEntry();
+
     //pressureTransducer = new AnalogPotentiometer(/* the AnalogIn port*/ 0, scale, offset);
     //rc.pneumatics.solOff();
     //rc.pneumatics.enableComp();
-    //SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
-    //SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
-    //SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
-    //SmartDashboard.putData("Compressor Off", new CompOff(rc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           .pneumatics));
+    SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
+    SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
+    SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
+    SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
 
   }
 
@@ -105,33 +121,19 @@ public class Robot extends TimedRobot {
     double velL = Math.pow(rc.j.getLeftY(),3); // Speed given by encoder is RPM
     double velR = Math.pow(rc.j.getRightY(),3);
 
-    SmartDashboard.putNumber("Joystick Y", velL);
+    LeftVTracker.setDouble(rc.rightEncoder.getRate());
     
-    //double spin = rc.j.getX();
-    //double twist = rc.j.getTwist();
-
-    /* 
-    double vel2 = vel;
-    if (spin < -0.3) {
-      if (vel < 200000) {
-        vel+=200000;
-      } 
-      vel = -vel;
-    } else if(spin > 0.3) {
-      if (vel < 200000) {
-        vel+=200000;
-      }
-      vel2 = vel;
-      vel = -vel;
-    }
-    */
-
+    SmartDashboard.putNumber("Right Encoder", rc.right.getMeasurementV());
+    SmartDashboard.putNumber("Left Encoder", rc.left.getMeasurementV());
+    
+    
     CommandScheduler.getInstance().schedule(new TankCommandGroup(
-      1000000, 
-      100000, 
+      100,//1193.66,  // 1000 cm/s
+      100, // 1000 cm/s
       rc
-    ));  
+    )); 
   }
+
 
   @Override
   public void testInit() {
