@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.commands.SolenoidFwd;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Stabilizer;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.commands.CompOff;
 import frc.robot.commands.CompOn;
@@ -101,7 +102,7 @@ public class Robot extends TimedRobot {
     // }
     double scale = 250, offset = -25;
 
-    LeftVTracker = tab.add("LeftVelocity", 1).getEntry();
+    //LeftVTracker = tab.add("LeftVelocity", 1).getEntry();
 
     //pressureTransducer = new AnalogPotentiometer(/* the AnalogIn port*/ 0, scale, offset);
     //rc.pneumatics.solOff();
@@ -110,6 +111,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
     SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
+    SmartDashboard.putNumber("Right", 0);
+    SmartDashboard.putNumber("Left", 0);
+    rc.stabilizer.navx.reset();
 
   }
 
@@ -121,16 +125,36 @@ public class Robot extends TimedRobot {
     double velL = Math.pow(rc.j.getLeftY(),3); // Speed given by encoder is RPM
     double velR = Math.pow(rc.j.getRightY(),3);
 
-    LeftVTracker.setDouble(rc.rightEncoder.getRate());
+    //LeftVTracker.setDouble(rc.rightEncoder.getRate());
+
+    SmartDashboard.putNumber("Right", rc.rightEncoder.getRate());
+    SmartDashboard.putNumber("Left", rc.rightEncoder.getRate());
     
-    SmartDashboard.putNumber("Right Encoder", rc.right.getMeasurementV());
-    SmartDashboard.putNumber("Left Encoder", rc.left.getMeasurementV());
+    SmartDashboard.putNumber("rightjoystick", velR);
+    SmartDashboard.putNumber("leftjoystick", velL);
+
     
+    // CommandScheduler.getInstance().schedule(new TankCommandGroup(
+    // 0,//1193.66,  // 1000 cm/s
+    // 0, // 1000 cm/s
+    // rc
+    // // forwards values 300,300
+    // )); 
+    //CommandScheduler.getInstance().schedule(rc.stabilizer.stabilize());
+    SmartDashboard.putNumber("navX Yaw", rc.stabilizer.navx.getYaw());
+    SmartDashboard.putNumber("navX Pitch", rc.stabilizer.navx.getPitch());
+    SmartDashboard.putNumber("navX Roll", rc.stabilizer.navx.getRoll());
+
+    if (velL == 0 && velR == 0) {
+      rc.stabilizer.navx.zeroYaw();
+    } else if (rc.stabilizer.navx.getYaw() > 0) {
+      velL-= 100;
+    } else if (rc.stabilizer.navx.getYaw() < 0) {
+      velR-= 100;
+    }
     
     CommandScheduler.getInstance().schedule(new TankCommandGroup(
-      100,//1193.66,  // 1000 cm/s
-      100, // 1000 cm/s
-      rc
+    25, 25, rc
     )); 
   }
 

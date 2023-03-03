@@ -10,20 +10,21 @@ import frc.robot.commands.TankCommandGroup;
 
 public class Stabilizer extends SubsystemBase {
     
-    private final AHRS navx;
+    public final AHRS navx;
     
 
     public Stabilizer() {
         navx = new AHRS();
     }
 
-    public void stabilize() {
+    public TankCommandGroup stabilize() {
         while (navx.getPitch() < 0 ) {
-            CommandScheduler.getInstance().schedule(new TankCommandGroup(1, 1, Robot.rc));
+            return new TankCommandGroup(1, 1, Robot.rc);
         } 
         while (navx.getPitch() > 180) {
-            CommandScheduler.getInstance().schedule(new TankCommandGroup(-1, -1, Robot.rc));
+            return new TankCommandGroup(-1, -1, Robot.rc);
         }
+        return new TankCommandGroup(0, 0, Robot.rc);
     }
 
 }

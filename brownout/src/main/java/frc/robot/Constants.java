@@ -26,13 +26,13 @@ public final class Constants {
   public static final int RIGHTBACK = 4; 
 
   //velocity
-  public static final double VEL_L_P = 0.01;
-  public static final double VEL_L_I = 0.01;
-  public static final double VEL_L_D = 0.01;
+  public static final double VEL_L_P = 0.037125;// 0.09
+  public static final double VEL_L_I = 0.00;
+  public static final double VEL_L_D = 0.00;
 
-  public static final double VEL_R_P = 0.015;
-  public static final double VEL_R_I = 0.01;
-  public static final double VEL_R_D = 0.01;
+  public static final double VEL_R_P = 0.035; // 0.09
+  public static final double VEL_R_I = 0.00;
+  public static final double VEL_R_D = 0.00;
 
   //distance
   public static final double DIST_L_P = 1;

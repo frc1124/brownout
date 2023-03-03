@@ -54,8 +54,8 @@ public class PIDDrive extends PIDSubsystem{
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
         //encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
-        encoder.setDistancePerPulse((Constants.WHEELRADIUS * Math.PI * 2) / encoder.getEncodingScale()); //operating frequency * 60 /maxrpm
-        // encoder.reset();
+        //encoder.reset();
+        encoder.setDistancePerPulse((6 * Math.PI) / 360); //operating frequency * 60 /maxrpm
     }
 
     public AHRS getNavxInstance() {
@@ -66,6 +66,7 @@ public class PIDDrive extends PIDSubsystem{
     protected void useOutput(double output, double setpoint) {
         final double out = controllerD.calculate(encoder.getDistance(), setpoint);
         double outFiltered = MathUtil.clamp(out, -8, 8);
+
         motors.setVoltage(outFiltered);
     }
 
@@ -77,6 +78,11 @@ public class PIDDrive extends PIDSubsystem{
     public void useOutputV(double output, double setpoint) {
         final double out = controllerV.calculate(encoder.getRate(), setpoint);
         double outFiltered = MathUtil.clamp(out, -8, 8);
+        if (isLeft) {
+            SmartDashboard.putNumber("Right PID val", outFiltered);
+        } else {
+            SmartDashboard.putNumber("Left PID val", outFiltered);
+        }
         motors.setVoltage(outFiltered);
     }
 
@@ -85,7 +91,7 @@ public class PIDDrive extends PIDSubsystem{
     }
 
     public double getMeasurementV() {
-        return encoder.getDistance();
+        return encoder.getRate();
     }
         
     public void set(double x) {

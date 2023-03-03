@@ -11,6 +11,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Stabilizer;
 
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.CounterBase;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,8 +46,8 @@ public class RobotContainer {
   public final CANSparkMax rightFollower = new CANSparkMax(Constants.RIGHTBACK, MotorType.kBrushless);
 
   //encoders
-  public final Encoder leftEncoder = new Encoder(1, 2);
-  public final Encoder rightEncoder = new Encoder(3, 4);
+  public final Encoder leftEncoder = new Encoder(4, 5, false, CounterBase.EncodingType.k4X);
+  public final Encoder rightEncoder = new Encoder(2, 3, true, CounterBase.EncodingType.k4X);
 
   //motorcontrollers
   public final MotorControllerGroup lefts = new MotorControllerGroup(leftLeader, leftFollower);
@@ -66,6 +68,8 @@ public class RobotContainer {
 
   // Pneumatics
   public Pneumatics pneumatics = new Pneumatics();
+
+  public Stabilizer stabilizer = new Stabilizer();
   
 
 
