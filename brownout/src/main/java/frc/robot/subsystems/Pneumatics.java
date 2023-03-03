@@ -8,20 +8,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
+import com.kauailabs.navx.frc.Tracer;
 
 import edu.wpi.first.wpilibj.Compressor;
 
 public class Pneumatics  extends SubsystemBase {
 
-  DoubleSolenoid solenoid;
+  Solenoid solenoidL;
+  Solenoid solenoidR;
   Compressor compressor;
   
   /** Creates a new ExampleSubsystem. */
   public Pneumatics() {
-    solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 2);  
+    solenoidL = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
+    solenoidR = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
     compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
   }
 
@@ -30,9 +34,6 @@ public class Pneumatics  extends SubsystemBase {
    *
    * @return a command
    */
-
-
-
 
 
   public void enableComp() {
@@ -44,17 +45,15 @@ public class Pneumatics  extends SubsystemBase {
   }
 
   public void solFwd() {
-    solenoid.set(Value.kForward);
-    //solenoid.toggle();
+    solenoidL.set(true);
+    solenoidR.set(true);
   }
 
   public void solBack() {
-    solenoid.set(Value.kReverse);
+    solenoidL.set(false);
+    solenoidR.set(false);
   }
 
-  public void solOff() {
-    solenoid.set(Value.kOff);
-  }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
