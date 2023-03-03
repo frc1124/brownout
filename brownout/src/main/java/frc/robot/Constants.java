@@ -26,11 +26,11 @@ public final class Constants {
   public static final int RIGHTBACK = 4; 
 
   //velocity
-  public static final double VEL_L_P = 0.037125;// 0.09
+  public static final double VEL_L_P = 0.0339;// 0.037 | 0.035 - 0.036
   public static final double VEL_L_I = 0.00;
   public static final double VEL_L_D = 0.00;
 
-  public static final double VEL_R_P = 0.035; // 0.09
+  public static final double VEL_R_P = 0.0352; // 0.09
   public static final double VEL_R_I = 0.00;
   public static final double VEL_R_D = 0.00;
 

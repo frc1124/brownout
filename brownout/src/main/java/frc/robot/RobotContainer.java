@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.PIDArm;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.Pneumatics;
@@ -62,6 +63,8 @@ public class RobotContainer {
     Constants.VEL_L_P, Constants.VEL_L_I, Constants.VEL_L_D);
   public final PIDController rightVController = new PIDController(
     Constants.VEL_R_P, Constants.VEL_R_I, Constants.VEL_R_D);
+  //public final PIDArm armController = new PIDArm(leftFollower, leftEncoder, leftDController)
+
   
   public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false);
   public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true);
