@@ -54,8 +54,13 @@ public class PIDDrive extends PIDSubsystem{
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
         //encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
+<<<<<<< Updated upstream
         //encoder.reset();
         encoder.setDistancePerPulse((6 * Math.PI) / 360); //operating frequency * 60 /maxrpm
+=======
+        encoder.setDistancePerPulse((3 * Math.PI * 2) / 360); //operating frequency * 60 /maxrpm
+        // encoder.reset();
+>>>>>>> Stashed changes
     }
 
     public AHRS getNavxInstance() {
