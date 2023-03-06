@@ -5,12 +5,16 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Stabilizer;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /** An example command that uses an example subsystem. */
 public class Stabilize extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Stabilizer m_subsystem;
+  private final RobotContainer rc = new RobotContainer();
+ 
 
   /**
    * Creates a new ExampleCommand.
@@ -30,8 +34,12 @@ public class Stabilize extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.stabilize();
-
+    double pitch = rc.stabilizer.navx.getPitch()/31.25;
+    if (rc.stabilizer.navx.getPitch() > 5) {
+      CommandScheduler.getInstance().schedule(new TankCommandGroup(30* pitch, 30 * pitch, 0));
+    } else if (rc.stabilizer.navx.getPitch() < -5) {
+      CommandScheduler.getInstance().schedule(new TankCommandGroup(-30 * pitch, -30 * pitch, 0));
+    }
   }
 
   // Called once the command ends or is interrupted.
