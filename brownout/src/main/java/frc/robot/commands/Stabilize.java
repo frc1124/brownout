@@ -31,6 +31,19 @@ public class Stabilize extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.stabilize();
+    rc.stabilizer.navx.zeroYaw();
+    if (rc.stabilizer.navx.getRoll() > 0) {
+      velL += 10;
+    } else if (rc.stabilizer.navx.getYRoll() < 0) {
+      velR -= 10;
+    }
+
+    rc.stabilizer.navx.zeroYaw();
+    if (rc.stabilizer.navx.getRoll() > 0) {
+      rc.velL = rc.stabilizer.navx.getRoll()*k
+    } else if (rc.stabilizer.navx.getYRoll() < 0) {
+      rc.velR -= 10;
+    }
 
   }
 
