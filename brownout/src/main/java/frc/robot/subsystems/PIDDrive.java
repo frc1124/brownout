@@ -29,16 +29,18 @@ public class PIDDrive extends PIDSubsystem{
 
     private PIDController controllerD;
     private PIDController controllerV;
-
+    private double totalOut;
+    private double kP;
     private boolean isLeft;
 
-    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft) {
+    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP) {
         super(controllerV);
         this.controllerV = controllerV;
         this.controllerD = controllerD;
         this.motors = motors;
         this.isLeft = isLeft;
         this.encoder = encoder;
+        this.kP = kP;
         // navx.reset();
 
         // We need to invert one side of the drivetrain so that positive voltages
@@ -75,14 +77,17 @@ public class PIDDrive extends PIDSubsystem{
         return encoder.getDistance();
     }
 
-    public void useOutputV(double output, double setpoint) {
+    public void useOutputV(double output, double setpoint, double setAngle) {
         final double out = controllerV.calculate(encoder.getRate(), setpoint);
-        double outFiltered = MathUtil.clamp(out, -8, 8);
-        if (isLeft) {
-            SmartDashboard.putNumber("Right PID val", outFiltered);
+        final double error = setAngle - navx.getAngle();
+
+        if (isLeft) { 
+            totalOut = out + (error * kP);
         } else {
-            SmartDashboard.putNumber("Left PID val", outFiltered);
+            totalOut = out - (error * kP);
         }
+
+        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
         motors.setVoltage(outFiltered);
     }
 

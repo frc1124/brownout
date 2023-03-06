@@ -99,16 +99,6 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.cancel();
     // }
-    double scale = 250, offset = -25;
-
-    //LeftVTracker = tab.add("LeftVelocity", 1).getEntry();
-
-    //pressureTransducer = new AnalogPotentiometer(/* the AnalogIn port*/ 0, scale, offset);
-    //rc.pneumatics.solOff();
-    //rc.pneumatics.enableComp();
-
-    rc.pneumatics.enableComp();
-    rc.pneumatics.solFwd();
 
     SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
@@ -116,7 +106,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
     SmartDashboard.putNumber("Right", 0);
     SmartDashboard.putNumber("Left", 0);
-    rc.stabilizer.navx.reset();
+    rc.stabilizer.reset();
 
 
   }
@@ -146,19 +136,16 @@ public class Robot extends TimedRobot {
     // // forwards values 300,300
     // )); 
     //CommandScheduler.getInstance().schedule(rc.stabilizer.stabilize());
-    SmartDashboard.putNumber("navX Yaw", rc.stabilizer.navx.getYaw());
-    SmartDashboard.putNumber("navX Pitch", rc.stabilizer.navx.getPitch());
-    SmartDashboard.putNumber("navX Roll", rc.stabilizer.navx.getRoll());
-
-    if (velL == 0 && velR == 0) {
-      rc.stabilizer.navx.zeroYaw();
-    } else if (rc.stabilizer.navx.getYaw() > 0) {
-      velL-= 100;
-    } else if (rc.stabilizer.navx.getYaw() < 0) {
-      velR-= 100;
-    }
+    SmartDashboard.putNumber("navX Yaw", rc.stabilizer.getYaw());
+    SmartDashboard.putNumber("navX Pitch", rc.stabilizer.getPitch());
+    SmartDashboard.putNumber("navX Roll", rc.stabilizer.getRoll());
     
-    CommandScheduler.getInstance().schedule(new TankCommandGroup( 0, 0, rc)); 
+    CommandScheduler.getInstance().schedule(new TankCommandGroup(
+    25, 
+    25, 
+    0, 
+    rc
+    )); 
   }
 
 

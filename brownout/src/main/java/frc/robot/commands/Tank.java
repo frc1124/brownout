@@ -26,8 +26,8 @@ public class Tank extends PIDCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Tank(double velocity, PIDController controller, PIDDrive side){
-    super(controller, side::getMeasurementV, velocity, output -> side.useOutputV(output, velocity));
+  public Tank(double velocity, PIDController controller, PIDDrive side, double setAngle){
+    super(controller, side::getMeasurementV, velocity, output -> side.useOutputV(output, velocity, setAngle));
     this.side = side;
     this.controller = controller;
     

@@ -8,14 +8,13 @@ public class TankCommandGroup extends ParallelCommandGroup{
     private RobotContainer rc;
     private double leftV;
     private double rightV;
-    
-    public TankCommandGroup(double leftV, double rightV, RobotContainer rc) {
+    public TankCommandGroup(double leftV, double rightV, double setAngle, RobotContainer rc) {
         super();
         this.rc = rc;
         this.leftV = leftV;
         this.rightV = rightV;
 
-        addCommands((Command) new Tank(rightV, rc.rightVController, rc.right));
-        addCommands((Command) new Tank(leftV, rc.leftVController, rc.left));
+        addCommands((Command) new Tank(rightV, rc.rightVController, rc.right, setAngle));
+        addCommands((Command) new Tank(leftV, rc.leftVController, rc.left, setAngle));
     }
 }

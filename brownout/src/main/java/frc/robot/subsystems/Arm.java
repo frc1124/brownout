@@ -1,68 +1,73 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import java.security.spec.EncodedKeySpec;
+import java.lang.ModuleLayer.Controller;
+import java.security.spec.EncodedKeySpec;
+import java.util.ResourceBundle.Control;
 
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-// import frc.robot.Constants;
-// import edu.wpi.first.math.controller.ArmFeedforward;
-// import edu.wpi.first.math.trajectory.TrapezoidProfile;
-// import edu.wpi.first.wpilibj.Encoder;
-// import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
+import frc.robot.Constants;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.math.MathUtil;
 
-// public class Arm extends TrapezoidProfileSubsystem {
-//     public final CANSparkMax winch;
-//     public final Encoder motorEncoder;
-//     public final ArmFeedforward feedforward = new ArmFeedforward(getEncoderOffset(), getEncoderOffset(), getEncoderOffset());
+public class Arm extends PIDSubsystem {
+    public TrapezoidProfile profile;
+    public CANSparkMax winch;
+    public PIDController controllerD;
+    public AnalogPotentiometer potentiometer;
 
-//     /** Creates a new ExampleSubsystem. */
-//     public Arm(CANSparkMax winch, Encoder motorEncoder) {
-//         super(
-//             new TrapezoidProfile.Constraints(
-//                 , 
-//                 )
-//         );
-//         //winch. set pids somehow
+    /** Creates a new ExampleSubsystem. */
+    public Arm(CANSparkMax winch, AnalogPotentiometer potentiometer, PIDController controllerD) {
+        super(controllerD);
+        this.controllerD = controllerD;
+        this.winch = winch;
+        this.potentiometer = potentiometer; 
+    }
 
+    @Override
+    public void useOutput(double current, double setpoint) {
+        // Calculate the feedforward from the sepoint
+        //double feedforward = feedforward.calculate(current, setpoint);
+        // Add the feedforward to the PID output to get the motor output
+        profile = new TrapezoidProfile(
+        new TrapezoidProfile.Constraints(5, 10),
+        new TrapezoidProfile.State(getMeasurementD(), getMeasurement()),
+        new TrapezoidProfile.State(setpoint, 0));
 
-//         this.winch = winch;
-//         this.motorEncoder = motorEncoder; 
+        double out = controllerD.calculate(potentiometer.get(), setpoint);
 
-//         //addRequirements(winch);
-//     }
+        double outFiltered = MathUtil.clamp(out, -8, 8);
+        winch.setVoltage(outFiltered);
+    }
 
-//     @Override
-//     public void useState(TrapezoidProfile.State setpoint) {
-//         // Calculate the feedforward from the sepoint
-//         double feedforward = feedforward.calculate(setpoint.position, setpoint.velocity);
-//         // Add the feedforward to the PID output to get the motor output
-//         winch.setSetpoint(
-//             ExampleSmartMotorController.PIDMode.kPosition, setpoint.position, feedforward / 12.0);
-//     }
+    public double getMeasurementD() {
+        return potentiometer.get();
+    }
 
-//     public Command setArmGoalCommand(double kArmOffsetRads) {
-//         return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
-//     }
+    public double getMeasurement() {
+        return winch.get();
+    }
 
+    public void extend() {
+        winch.set(1);
 
-//     public void extend() {
-//         winch.set(1);
+    }
 
-//     }
-
-//     public void retract() {
-//         winch.set(-1);
-//     }
-
-//     public double getEncoderOffset() {
-//         return motorEncoder.getDistance();
-//     }
-// }
+    public void retract() {
+        winch.set(-1);
+    }
+}

@@ -1,17 +1,33 @@
 package frc.robot.commands;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.RobotContainer;
 
- public class ArmExtend extends ParallelCommandGroup{
-    private RobotContainer rc;
-    private double vel;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.subsystems.Arm;
 
-    public ArmExtend(double vel, RobotContainer rc) {
-        super(); //1234567890 --TJ
-        this.rc = rc;
-        this.vel = vel;
-
-        addCommands((Command) new Tank(vel, rc.leftVController, rc.left));
+public class ArmExtend extends PIDCommand {
+    @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+    
+    private Arm arm;
+    
+    public ArmExtend(double angle, PIDController controllerD, Arm arm) {
+        super(controllerD, arm::getMeasurementD, angle, output -> arm.useOutput(output, angle));
+        addRequirements(arm);
     }
- }
+
+    @Override
+    public void initialize() {}
+
+    // @Override 
+    // public void execute() {
+    //     arm.extend();
+    // }
+
+    @Override
+    public void end(boolean interrupted) {}
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+}

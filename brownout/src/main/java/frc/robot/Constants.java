@@ -43,6 +43,18 @@ public final class Constants {
   public static final double DIST_R_I = 1;  
   public static final double DIST_R_D = 1; 
 
+  // Angle
+  public static final double ANGLE_L_P = 0.01;
+  public static final double ANGLE_R_P = 0.01;
+
+  // Arm
+  public static final int ARM_ID = 0; // change
+  
+  public static final double ARM_P = 0.01;
+  public static final double ARM_I = 0.01;
+  public static final double ARM_D = 0.01;
+
+  
   //max
   public static final double MAXSPEED = 0;
   //public static final double MAXANGULARSPEED = 0;
