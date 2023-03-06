@@ -42,7 +42,7 @@ public class PIDArm extends PIDSubsystem{
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
-        //encoder.setAverageDepth((int) (mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
+        //encoder.setAverageDepth((int) w(mod * 2 * Math.PI * Constants.WHEELRADIUS / Constants.ENCODERRESOLUTION));
         //encoder.setDistancePerPulse((3 * Math.PI * 2) / 360); //operating frequency * 60 /maxrpm
         encoder.reset();
     }

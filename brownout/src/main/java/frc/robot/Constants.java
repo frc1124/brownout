@@ -55,6 +55,12 @@ public final class Constants {
   public static final int ARM_STAGE_TWO = 0; //not the correct id
   public static final int ARM_STAGE_THREE = 0; //not the correct id
 
+  public static final int LEFT_BRAKE = 0;
+  public static final int RIGHT_BRAKE = 0;
+
+  public static final int LEFT_SERVO = 0;
+  public static final int RIGHT_SERVO = 1;
+
   public static final double DRIVEkS = 0;
   public static final double DRIVEkV = 0;
   public static final double kMaxAcceleration = 0; //radians per second

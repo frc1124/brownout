@@ -24,7 +24,7 @@ public class Pneumatics  extends SubsystemBase {
   
   /** Creates a new ExampleSubsystem. */
   public Pneumatics() {
-    solenoidL = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
+    solenoidL = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
     solenoidR = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
     compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
   }

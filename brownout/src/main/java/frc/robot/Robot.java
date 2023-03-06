@@ -38,8 +38,7 @@ public class Robot extends TimedRobot {
   private Command autoCMD;
   ShuffleboardTab tab;
   AnalogPotentiometer pressureTransducer;
-  public static RobotContainer rc;
-  /**
+  public static RobotContainer rc;  /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
@@ -107,6 +106,10 @@ public class Robot extends TimedRobot {
     //pressureTransducer = new AnalogPotentiometer(/* the AnalogIn port*/ 0, scale, offset);
     //rc.pneumatics.solOff();
     //rc.pneumatics.enableComp();
+
+    rc.pneumatics.enableComp();
+    rc.pneumatics.solFwd();
+
     SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
@@ -114,6 +117,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right", 0);
     SmartDashboard.putNumber("Left", 0);
     rc.stabilizer.navx.reset();
+
 
   }
 
@@ -134,6 +138,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("leftjoystick", velL);
 
     
+    
     // CommandScheduler.getInstance().schedule(new TankCommandGroup(
     // 0,//1193.66,  // 1000 cm/s
     // 0, // 1000 cm/s
@@ -153,9 +158,7 @@ public class Robot extends TimedRobot {
       velR-= 100;
     }
     
-    CommandScheduler.getInstance().schedule(new TankCommandGroup(
-    25, 25, rc
-    )); 
+    CommandScheduler.getInstance().schedule(new TankCommandGroup( 0, 0, rc)); 
   }
 
 
