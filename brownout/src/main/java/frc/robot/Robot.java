@@ -26,6 +26,7 @@ import edu.wpi.first.cscore.CameraServerCvJNI;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import frc.robot.commands.Stabilize;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -99,14 +100,14 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.cancel();
     // }
-
+    rc.pneumatics.disableComp();
     SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
     SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
     SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
     SmartDashboard.putNumber("Right", 0);
     SmartDashboard.putNumber("Left", 0);
-    rc.stabilizer.reset();
+    //rc.stabilizer.reset();
 
 
   }
@@ -140,12 +141,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("navX Pitch", rc.stabilizer.getPitch());
     SmartDashboard.putNumber("navX Roll", rc.stabilizer.getRoll());
     
-    CommandScheduler.getInstance().schedule(new TankCommandGroup(
-    25, 
-    25, 
-    0, 
-    rc
-    )); 
+    // CommandScheduler.getInstance().schedule(new TankCommandGroup(
+    // 25, 
+    // 25, 
+    // 0, 
+    // rc
+    // )); 
+
+    CommandScheduler.getInstance().schedule(new Stabilize(rc.stabilizer));
   }
 
 

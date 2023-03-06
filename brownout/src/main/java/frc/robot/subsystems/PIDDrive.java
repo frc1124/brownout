@@ -25,15 +25,14 @@ public class PIDDrive extends PIDSubsystem{
     public final Encoder encoder;
 
     public final MotorControllerGroup motors;
-    private final AHRS navx = new AHRS();
-
+    public AHRS navx;
     private PIDController controllerD;
     private PIDController controllerV;
     private double totalOut;
     private double kP;
     private boolean isLeft;
 
-    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP) {
+    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP, AHRS navx) {
         super(controllerV);
         this.controllerV = controllerV;
         this.controllerD = controllerD;
@@ -41,6 +40,7 @@ public class PIDDrive extends PIDSubsystem{
         this.isLeft = isLeft;
         this.encoder = encoder;
         this.kP = kP;
+        this.navx = navx;
         // navx.reset();
 
         // We need to invert one side of the drivetrain so that positive voltages

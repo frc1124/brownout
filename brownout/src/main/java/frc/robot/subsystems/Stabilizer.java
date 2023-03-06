@@ -10,19 +10,18 @@ import frc.robot.commands.TankCommandGroup;
 
 public class Stabilizer extends SubsystemBase {
     
-    private final AHRS navx;
+    private AHRS navx;
     private double pitch;
 
-    public Stabilizer() {
-        navx = new AHRS();
+    public Stabilizer(AHRS navx) {
+        this.navx = navx;
     }
-
     public void stabilize() {
         pitch = navx.getPitch();
-        while (pitch > 0.9 ) {
+        while (pitch > 0 ) {
             CommandScheduler.getInstance().schedule(new TankCommandGroup(.625 * pitch, .625 * pitch, 0, Robot.rc));
         } 
-        while (pitch < -0.9) {
+        while (pitch < -1) {
             CommandScheduler.getInstance().schedule(new TankCommandGroup(-.625* pitch, -.625 * pitch, 0, Robot.rc));
         }
     }

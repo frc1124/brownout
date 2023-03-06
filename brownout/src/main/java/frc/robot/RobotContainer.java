@@ -5,12 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmExtend;
+//import frc.robot.commands.ArmExtend;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.PIDArm;
+//import frc.robot.subsystems.PIDArm;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.Pneumatics;
@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.CounterBase;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,20 +70,21 @@ public class RobotContainer {
     Constants.VEL_R_P, Constants.VEL_R_I, Constants.VEL_R_D);
   //public final PIDArm armController = new PIDArm(leftFollower, leftEncoder, leftDController)
 
-  
-  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false, Constants.ANGLE_L_P);
-  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true, Constants.ANGLE_R_P);
+  public final AHRS navx = new AHRS();
+  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false, Constants.ANGLE_L_P, navx);
+  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true, Constants.ANGLE_R_P, navx);
 
   // Pneumatics
   public Pneumatics pneumatics = new Pneumatics();
 
-  public Stabilizer stabilizer = new Stabilizer();
+  public Stabilizer stabilizer = new Stabilizer(navx);
+  
   
   // Arm
-  CANSparkMax armMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
-  AnalogPotentiometer pot = new AnalogPotentiometer(0, 180, 30);
-  PIDController controllerD = new PIDController(Constants.ARM_P, Constants.ARM_I, Constants.ARM_D);
-  Arm arm = new Arm(armMotor, pot, controllerD);
+  // CANSparkMax armMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
+  // AnalogPotentiometer pot = new AnalogPotentiometer(0, 180, 30);
+  // PIDController controllerD = new PIDController(Constants.ARM_P, Constants.ARM_I, Constants.ARM_D);
+  // Arm arm = new Arm(armMotor, pot, controllerD);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -122,7 +124,7 @@ public class RobotContainer {
   
   private void configureBindings() {
     //getKey("botton right").whileHeld(new El_down(lift, Constants.Lift_BOTTOM_POINT)); (sample)
-    getKey("botton right").onTrue(new ArmExtend(30, controllerD, null)); 
+    //getKey("botton right").onTrue(new ArmExtend(30, controllerD, null)); 
   }
 
   public Command getAutonomousCommand() {
