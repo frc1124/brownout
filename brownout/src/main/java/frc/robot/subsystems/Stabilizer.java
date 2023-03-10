@@ -15,19 +15,24 @@ public class Stabilizer extends SubsystemBase {
 
     public Stabilizer(AHRS navx) {
         this.navx = navx;
+        
     }
     public void stabilize() {
-        pitch = navx.getPitch();
-        while (pitch > 0 ) {
+        pitch = navx.getRoll();
+        while (pitch > 0.1 ) {
             CommandScheduler.getInstance().schedule(new TankCommandGroup(.625 * pitch, .625 * pitch, 0, Robot.rc));
         } 
-        while (pitch < -1) {
+        while (pitch < -0.1) {
             CommandScheduler.getInstance().schedule(new TankCommandGroup(-.625* pitch, -.625 * pitch, 0, Robot.rc));
         }
     }
 
+    public double getVelX() {
+        return navx.getVelocityX();
+    }
+
     public double getYaw() {
-        return navx.getYaw();
+        return navx.getRate();
     }
 
     public double getPitch() {

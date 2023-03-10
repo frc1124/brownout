@@ -45,10 +45,10 @@ public final class Constants {
 
   // Angle
   public static final double ANGLE_L_P = 0.01;
-  public static final double ANGLE_R_P = 0.01;
+  public static final double ANGLE_R_P = 0.05;
 
   // Arm
-  public static final int ARM_ID = 0; // change
+  public static final int ARM_ID = 6; // change
   
   public static final double ARM_P = 0.01;
   public static final double ARM_I = 0.01;
@@ -62,13 +62,10 @@ public final class Constants {
   public static final int WHEELRADIUS = 2;
   public static final int ENCODERRESOLUTION = 4000; //i think this is wrong
   //SparkMax IDS
-  public static final int CLAW_ID = 0; //not the correct id
-  public static final int ARM_STAGE_ONE = 0; //not the correct id
-  public static final int ARM_STAGE_TWO = 0; //not the correct id
-  public static final int ARM_STAGE_THREE = 0; //not the correct id
+  public static final int CLAW_ID = 5; //not the correct id
 
-  public static final int LEFT_BRAKE = 0;
-  public static final int RIGHT_BRAKE = 0;
+  public static final int LEFT_BRAKE = 7;
+  public static final int RIGHT_BRAKE = 8;
 
   public static final int LEFT_SERVO = 0;
   public static final int RIGHT_SERVO = 1;

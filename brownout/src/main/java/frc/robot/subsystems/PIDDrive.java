@@ -31,6 +31,7 @@ public class PIDDrive extends PIDSubsystem{
     private double totalOut;
     private double kP;
     private boolean isLeft;
+    private double lastAngle = 0;
 
     public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP, AHRS navx) {
         super(controllerV);
@@ -41,6 +42,7 @@ public class PIDDrive extends PIDSubsystem{
         this.encoder = encoder;
         this.kP = kP;
         this.navx = navx;
+        navx.reset();
         // navx.reset();
 
         // We need to invert one side of the drivetrain so that positive voltages
@@ -65,28 +67,49 @@ public class PIDDrive extends PIDSubsystem{
     }
 
     @Override
-    protected void useOutput(double output, double setpoint) {
+    public void useOutput(double output, double setpoint) {
         final double out = controllerD.calculate(encoder.getDistance(), setpoint);
-        double outFiltered = MathUtil.clamp(out, -8, 8);
-
-        motors.setVoltage(outFiltered);
-    }
-
-    @Override
-    protected double getMeasurement() {
-        return encoder.getDistance();
-    }
-
-    public void useOutputV(double output, double setpoint, double setAngle) {
-        final double out = controllerV.calculate(encoder.getRate(), setpoint);
-        final double error = setAngle - navx.getAngle();
+        final double error = 0 - navx.getAngle();
 
         if (isLeft) { 
             totalOut = out + (error * kP);
         } else {
             totalOut = out - (error * kP);
         }
+        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
+        motors.setVoltage(outFiltered);
+    }
 
+    @Override
+    public double getMeasurement() {
+        return encoder.getDistance();
+    }
+
+    public void useOutputV(double output, double setpoint, double setAngle) {
+
+        final double out = controllerV.calculate(encoder.getRate(), setpoint);
+        final double error = setAngle - navx.getAngle() + lastAngle;
+        SmartDashboard.putNumber("Angle Error", error);
+        
+        if (isLeft) { 
+            totalOut = out + (error * kP);
+        } else {
+            totalOut = out - (error * kP);
+        }
+        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
+        motors.setVoltage(outFiltered);
+        lastAngle=error;
+    }
+    public void useOutputAuto(double speed, double distance) {
+        final double out = speed;
+        final double error = 0 - navx.getAngle();
+        SmartDashboard.putNumber("Angle Error", error);
+        
+        if (isLeft) { 
+            totalOut = out + (error * kP);
+        } else {
+            totalOut = out - (error * kP);
+        }
         double outFiltered = MathUtil.clamp(totalOut, -8, 8);
         motors.setVoltage(outFiltered);
     }

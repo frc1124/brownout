@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
+import java.nio.channels.Channel;
+
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
 import com.kauailabs.navx.frc.Tracer;
 
@@ -20,13 +22,17 @@ public class Pneumatics  extends SubsystemBase {
 
   Solenoid solenoidL;
   Solenoid solenoidR;
+  Solenoid solenoidA;
   Compressor compressor;
   
   /** Creates a new ExampleSubsystem. */
   public Pneumatics() {
     solenoidL = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
     solenoidR = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
+    solenoidA = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
     compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+
+    compressor.disable();
   }
 
   /**
@@ -52,6 +58,14 @@ public class Pneumatics  extends SubsystemBase {
   public void solBack() {
     solenoidL.set(false);
     solenoidR.set(false);
+  }
+
+  public void stopArm() {
+    solenoidA.set(true);
+  }
+  
+  public void releaseArm() {
+    solenoidA.set(false);
   }
 
 

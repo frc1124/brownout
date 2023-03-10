@@ -62,12 +62,15 @@ public class Arm extends PIDSubsystem {
         return winch.get();
     }
 
-    public void extend() {
-        winch.set(1);
-
+    public void raise() {
+        if (potentiometer.get() < 90) {
+            winch.set(.5);
+        }
     }
 
-    public void retract() {
-        winch.set(-1);
+    public void lower() {
+        if (potentiometer.get() > 0) {
+            winch.set(-.5);
+        }
     }
 }

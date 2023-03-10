@@ -6,15 +6,27 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.ArmExtend;
+import frc.robot.commands.ArmRaise;
+import frc.robot.commands.ArmLower;
 import frc.robot.commands.Autos;
+import frc.robot.commands.BrakeStop;
+import frc.robot.commands.BrakeOpen;
+import frc.robot.commands.ClawClose;
+import frc.robot.commands.ClawOpen;
+import frc.robot.commands.EnableVision;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SolenoidBack;
+import frc.robot.commands.SolenoidFwd;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Brake;
 import frc.robot.subsystems.ExampleSubsystem;
 //import frc.robot.subsystems.PIDArm;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Stabilizer;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Claw;
 
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,6 +38,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,7 +47,6 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.CounterBase;
 import com.kauailabs.navx.frc.AHRS;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -80,12 +92,24 @@ public class RobotContainer {
   public Stabilizer stabilizer = new Stabilizer(navx);
   
   
-  // Arm
-  // CANSparkMax armMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
-  // AnalogPotentiometer pot = new AnalogPotentiometer(0, 180, 30);
-  // PIDController controllerD = new PIDController(Constants.ARM_P, Constants.ARM_I, Constants.ARM_D);
-  // Arm arm = new Arm(armMotor, pot, controllerD);
+  // Arm deez nuts
+  public CANSparkMax armMotor = new CANSparkMax(Constants.ARM_ID, MotorType.kBrushless);
+  public AnalogPotentiometer pot = new AnalogPotentiometer(0, 180, 30);
+  public PIDController controllerD = new PIDController(Constants.ARM_P, Constants.ARM_I, Constants.ARM_D);
+  public Arm arm = new Arm(armMotor, pot, controllerD);
 
+  // Claw
+  public Claw claw = new Claw();
+
+  // Brake 
+  public Brake brake = new Brake();
+
+  // Autonomous Commands
+  public SendableChooser<Command> chooser = new SendableChooser<>(); 
+
+  // Vision
+  Vision vision = new Vision();
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     j = new XboxController(0);
@@ -106,29 +130,42 @@ public class RobotContainer {
 
   public static JoystickButton getKey(String key) { 
 
-    logitechMap.put("trigger", new JoystickButton(j, 1));
-    logitechMap.put("thumb button", new JoystickButton(j, 2));
-    logitechMap.put("bottom left", new JoystickButton(j, 3));
-    logitechMap.put("bottom right", new JoystickButton(j, 4));
-    logitechMap.put("top left", new JoystickButton(j, 5));
-    logitechMap.put("top right", new JoystickButton(j, 6));
-    logitechMap.put("seven", new JoystickButton(j, 7));
-    logitechMap.put("eight", new JoystickButton(j, 8));
+    logitechMap.put("1", new JoystickButton(j, 1));
+    logitechMap.put("2", new JoystickButton(j, 2));
+    logitechMap.put("3", new JoystickButton(j, 3));
+    logitechMap.put("4", new JoystickButton(j, 4));
+    logitechMap.put("left button", new JoystickButton(j, 5));
+    logitechMap.put("right button", new JoystickButton(j, 6));
+    logitechMap.put("left trigger", new JoystickButton(j, 7));
+    logitechMap.put("right trigger", new JoystickButton(j, 8));
     logitechMap.put("nine", new JoystickButton(j, 9));
     logitechMap.put("ten", new JoystickButton(j, 10));
-    logitechMap.put("eleven", new JoystickButton(j, 11));
-    logitechMap.put("twelve", new JoystickButton(j, 12));
+    logitechMap.put("left joystick", new JoystickButton(j, 11));
+    logitechMap.put("right joystick", new JoystickButton(j, 12));
 
     return logitechMap.get(key);
   }
   
   private void configureBindings() {
-    //getKey("botton right").whileHeld(new El_down(lift, Constants.Lift_BOTTOM_POINT)); (sample)
-    //getKey("botton right").onTrue(new ArmExtend(30, controllerD, null)); 
+    // getKey("botton right").onTrue(new ArmExtend(30, controllerD, null)); 
+    // getKey("thumb button").onTrue(new ArmExtend(50, controllerD, null)); 
+    // getKey("botton left").onTrue(new ArmExtend(0, controllerD, null)); 
+    getKey("right trigger").whileTrue(new ArmRaise(arm)); 
+    getKey("left trigger").whileTrue(new ArmLower(arm)); 
+    getKey("left button").onTrue(new ClawClose(claw));
+    getKey("right button").onTrue(new ClawOpen(claw));
+    getKey("9").toggleOnTrue(new BrakeStop(brake));
+    getKey("9").toggleOnFalse(new BrakeOpen(brake));
+    getKey("10").toggleOnTrue(new SolenoidFwd(pneumatics));
+    getKey("10").toggleOnFalse(new SolenoidBack(pneumatics));
+    getKey("4").onTrue(new EnableVision(vision));
+
+
   }
 
   public Command getAutonomousCommand() {
     //An example command will be run in autonomous
-    return (new TankCommandGroup(0, 0, 0, Robot.rc));
+    return chooser.getSelected();
   }
+  
 }
