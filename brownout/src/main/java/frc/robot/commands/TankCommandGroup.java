@@ -14,7 +14,7 @@ public class TankCommandGroup extends ParallelCommandGroup{
         this.leftV = leftV;
         this.rightV = rightV;
 
-        addCommands((Command) new Tank(rightV, rc.rightVController, rc.right, setAngle));
-        addCommands((Command) new Tank(leftV, rc.leftVController, rc.left, setAngle));
+        addCommands((Command) new Tank(this.rightV, this.rc.rightVController, this.rc.right, setAngle));
+        addCommands((Command) new Tank(this.leftV, this.rc.leftVController, this.rc.left, setAngle));
     }
 }

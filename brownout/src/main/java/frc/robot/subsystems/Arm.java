@@ -4,23 +4,12 @@
 
 package frc.robot.subsystems;
 
-import java.lang.ModuleLayer.Controller;
-import java.security.spec.EncodedKeySpec;
-import java.util.ResourceBundle.Control;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.Constants;
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.math.MathUtil;
 

@@ -4,18 +4,12 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 
 import com.kauailabs.navx.frc.AHRS;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.PIDDrive;
 
-import java.util.function.DoubleConsumer;
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
@@ -23,10 +17,8 @@ public class DriveCommand extends CommandBase {
   private PIDDrive leftSide;
   private PIDDrive rightSide;
   private AHRS navx;
-  private lastAngle = 0;
- // private PIDController leftController;
-//  private PIDController rightController;
-// TODO Add navx
+  private double lastAngle = 0;
+
   /**
    * Creates a new ExampleCommand.
    *
@@ -38,17 +30,19 @@ public class DriveCommand extends CommandBase {
     this.navx = navx;
     addRequirements(leftSide);
     addRequirements(rightSide);
-    addRequirements(navx);
   }
 
-  private calculateWithDeadband(double v, double deadband){
-    return (v -deadband*Math.abs(v)/v)(1-deadband);
+  private double calculateWithDeadband(double v, double deadband){
+    double out = v;
+    out -= deadband*Math.abs(v)/v;
+    out /= (1-deadband);
+    return out;
   }
 
   @Override
   public void execute() {
-    double x = Math.pow(calculateWithDeadband(rc.j.getRightX(), 0.1),3);
-    double y = Math.pow(calculateWithDeadband(rc.j.getLeftY(), 0.1),3);
+    double x = Math.pow(calculateWithDeadband(RobotContainer.j.getRightX(), 0.1),3);
+    double y = Math.pow(calculateWithDeadband(RobotContainer.j.getLeftY(), 0.1),3);
    
     double a = Math.atan(y/x);
   
@@ -63,7 +57,7 @@ public class DriveCommand extends CommandBase {
     leftSide.setSetpoint( leftSpeed);
     rightSide.setSetpoint(rightSpeed);
 
-    this.lastAngle = calculateWithDeadband(this.navx.getAngle());
+    this.lastAngle = this.calculateWithDeadband(this.navx.getAngle(), 0.1);
    
     if (this.lastAngle != a) {
         // Adjust turn
@@ -85,7 +79,8 @@ public class DriveCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     
-    side.set(0);
+    leftSide.set(0);
+    rightSide.set(0);
   }
 
   //Returns true when the command should end.

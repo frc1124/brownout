@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Stabilizer;
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /** An example command that uses an example subsystem. */
 public class Stabilize extends CommandBase {

@@ -5,28 +5,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.commands.TankCommandGroup;
+import frc.robot.commands.*;
 //import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.Stabilizer;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
-import frc.robot.commands.Autos;
-import javax.print.attribute.standard.PresentationDirection;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CameraServerCvJNI;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import frc.robot.commands.Stabilize;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -64,8 +52,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     rc = new RobotContainer();
     rc.navx.reset();
-    rc.left.lastAngle = 0;
-    rc.right.lastAngle = 0;
   }
 
   /**
@@ -112,7 +98,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    PneumaticsControlModule pcm = new PneumaticsControlModule();
+//    PneumaticsControlModule pcm = new PneumaticsControlModule();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

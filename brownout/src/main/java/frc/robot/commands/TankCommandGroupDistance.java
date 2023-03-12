@@ -12,7 +12,7 @@ public class TankCommandGroupDistance extends ParallelCommandGroup{
         this.rc = rc;
         this.distance = distance;
 
-        addCommands((Command) new TankDistance(speed, distance, rc.left));
-        addCommands((Command) new TankDistance(speed, distance, rc.right));
+        addCommands((Command) new TankDistance(speed, this.distance, this.rc.left));
+        addCommands((Command) new TankDistance(speed, this.distance, this.rc.right));
     }
 }

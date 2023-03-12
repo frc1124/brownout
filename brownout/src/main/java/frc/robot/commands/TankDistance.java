@@ -4,22 +4,16 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.PIDDrive;
 
-import java.util.function.DoubleConsumer;
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /** An example command that uses an example subsystem. */
 public class TankDistance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private PIDDrive side;
-  private PIDController controller;
+//  private PIDController controller;
   double speed;
   double distance;
 

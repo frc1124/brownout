@@ -1,24 +1,12 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS; 
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.Constants;
-import com.revrobotics.RelativeEncoder;
 
 public class PIDDrive extends PIDSubsystem{
 
@@ -27,25 +15,21 @@ public class PIDDrive extends PIDSubsystem{
     public final MotorControllerGroup motors;
     private PIDController controllerD;
     private PIDController controllerV;
-    private double totalOut;
-    private double kP;
     private boolean isLeft;
 
-    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP) {
+    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft) {
         super(controllerV);
         this.controllerV = controllerV;
         this.controllerD = controllerD;
         this.motors = motors;
         this.isLeft = isLeft;
         this.encoder = encoder;
-        this.kP = kP;
+//        this.kP = kP;
 
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
-        int mod = -1;
         if(isLeft) {
-            mod = 1;
             motors.setInverted(true);
         }
 
@@ -61,8 +45,9 @@ public class PIDDrive extends PIDSubsystem{
     @Override
     public void useOutput(double output, double setpoint) {
         final double out = controllerD.calculate(encoder.getDistance(), setpoint);
-        double outFiltered = MathUtil.clamp(out, -8, 8);
-        motors.setVoltage(outFiltered);
+ //       double outFiltered = MathUtil.clamp(out, -8, 8);
+         motors.set(out);
+//        motors.setVoltage(outFiltered);
     }
 
     @Override

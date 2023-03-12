@@ -4,23 +4,17 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.ArmExtend;
 import frc.robot.commands.ArmRaise;
 import frc.robot.commands.ArmLower;
-import frc.robot.commands.Autos;
 import frc.robot.commands.BrakeDisable;
 import frc.robot.commands.BrakeStop;
 import frc.robot.commands.BrakeOpen;
 import frc.robot.commands.ClawClose;
 import frc.robot.commands.ClawOpen;
-import frc.robot.commands.EnableVision;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Brake;
-import frc.robot.subsystems.ExampleSubsystem;
 //import frc.robot.subsystems.PIDArm;
-import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
 //import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Stabilizer;
@@ -30,11 +24,8 @@ import frc.robot.subsystems.Claw;
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.Encoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.CounterBase;
 import com.kauailabs.navx.frc.AHRS;
 /**
@@ -82,8 +72,8 @@ public class RobotContainer {
   //public final PIDArm armController = new PIDArm(leftFollower, leftEncoder, leftDController)
 
   public final AHRS navx = new AHRS();
-  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false, Constants.ANGLE_L_P, navx);
-  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true, Constants.ANGLE_R_P, navx);
+  public final PIDDrive left = new PIDDrive(lefts, leftEncoder, leftVController, leftDController, false);
+  public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true);
 
   // Pneumatics
   //public Pneumatics pneumatics = new Pneumatics();

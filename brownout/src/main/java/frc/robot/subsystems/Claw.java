@@ -5,20 +5,19 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+//import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Claw extends SubsystemBase {
     private static CANSparkMax clawMotor;
-    private RelativeEncoder encoder;
+//    private RelativeEncoder encoder;
   /** Creates a new ExampleSubsystem. */
     public Claw() {
         clawMotor = new CANSparkMax(Constants.CLAW_ID, MotorType.kBrushless);
-        encoder = clawMotor.getEncoder();
+ //       encoder = clawMotor.getEncoder();
     }
 
     public void Open() {
