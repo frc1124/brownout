@@ -13,14 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.commands.SolenoidFwd;
 import frc.robot.commands.TankCommandGroup;
-import frc.robot.subsystems.Pneumatics;
+//import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Stabilizer;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.commands.Autos;
-import frc.robot.commands.CompOff;
-import frc.robot.commands.CompOn;
 import javax.print.attribute.standard.PresentationDirection;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -38,6 +35,7 @@ import frc.robot.commands.Stabilize;
  */
 public class Robot extends TimedRobot {
   GenericEntry LeftVTracker;
+  double velA =0;
   //CameraServer cam;
   private Command autoCMD;
   ShuffleboardTab tab;
@@ -53,17 +51,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     tab = Shuffleboard.getTab("SmartDashboard");
-    Command middle_auto = Autos.middleAuto();
+    // Command middle_auto = Autos.middleAuto();
+    // Command default_auto = Autos.defaultAuto();
     
-    chooser.setDefaultOption("middle_auto", middle_auto);
-    chooser.addOption("Right Command", middle_auto);
-    chooser.addOption("Left Command", middle_auto);
+    // chooser.setDefaultOption("middle_auto", middle_auto);
+    // chooser.addOption("Right Command", default_auto);
+    // chooser.addOption("Left Command", default_auto);
     
     SmartDashboard.putData("Auto Choices", chooser);
     // CameraServer.startAutomaticCapture();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     rc = new RobotContainer();
+    rc.navx.reset();
+    rc.left.lastAngle = 0;
+    rc.right.lastAngle = 0;
   }
 
   /**
@@ -92,6 +94,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    rc.navx.reset();
     autoCMD = rc.getAutonomousCommand();
 
     //schedule the autonomous command (example)
@@ -117,15 +120,14 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.cancel();
     // }
-    SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
-    SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
-    SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
-    SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
-    SmartDashboard.putNumber("Right", 0);
-    SmartDashboard.putNumber("Left", 0);
+    // SmartDashboard.putData("Sol forward", new SolenoidFwd(rc.pneumatics));
+    // SmartDashboard.putData("Sol back", new SolenoidFwd(rc.pneumatics));
+    // SmartDashboard.putData("Compressor On", new CompOn(rc.pneumatics));
+    // SmartDashboard.putData("Compressor Off", new CompOff(rc.pneumatics));
+    // SmartDashboard.putNumber("Right", 0);
+    // SmartDashboard.putNumber("Left", 0);
+    rc.navx.reset();
     rc.stabilizer.reset();
-
-
   }
 
   /** This function is called periodically during operator control. */
@@ -133,8 +135,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //SmartDashboard.putNumber("PSI", pressureTransducer.get());
 
-    double velL = 25 * Math.pow(rc.j.getLeftY(),3); // Speed 
-    double velA = rc.j.getRightX()*20; // Angle
+    double velL = 100 * Math.pow(rc.j.getLeftY(),3); // Speed 
+    //double velA=0;
+    SmartDashboard.putNumber("Val", rc.j.getRightX());
+    if (rc.j.getRightX() < 0.25 && rc.j.getRightX()> -0.25) {
+      velA += 0;
+    } else {
+      velA += rc.j.getRightX()*360; // Angle
+      SmartDashboard.putNumber("Angle", velA);
+  }
+
+    
 
     //LeftVTracker.setDouble(rc.rightEncoder.getRate());
 

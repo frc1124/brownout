@@ -73,4 +73,8 @@ public class Arm extends PIDSubsystem {
             winch.set(-.5);
         }
     }
+
+    public void stop() {
+        winch.set(0);
+    }
 }

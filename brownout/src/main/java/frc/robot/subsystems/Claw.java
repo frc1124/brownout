@@ -22,22 +22,14 @@ public class Claw extends SubsystemBase {
     }
 
     public void Open() {
-        while (true) {
-            clawMotor.set(.75);
-            if (encoder.getPosition() == 0.7) {
-                clawMotor.set(0);
-                break;
-            }
-        } 
+        clawMotor.set(.35);
     }
 
     public void Close() {
-        while (true) {
-            clawMotor.set(-.75);
-            if (encoder.getPosition() == .2) {
-                clawMotor.set(0);
-                break;
-            }
-        } 
+        clawMotor.set(-.35);
+    }
+
+    public void stop() {
+        clawMotor.set(0);
     }
 }

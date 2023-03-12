@@ -4,24 +4,24 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.Brake;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Claw;
 
 /** An example command that uses an example subsystem. */
-public class ClawOpen extends CommandBase {
+public class BrakeDisable extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Claw claw;
+  private final Brake brake;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ClawOpen(Claw claw) {
-    this.claw = claw;
+  public BrakeDisable(Brake brake) {
+    this.brake = brake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(claw);
+    addRequirements(brake);
   }
 
   // Called when the command is initially scheduled.
@@ -31,14 +31,12 @@ public class ClawOpen extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    claw.Open();
+    brake.Go();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    claw.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

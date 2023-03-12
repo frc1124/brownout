@@ -44,8 +44,8 @@ public final class Constants {
   public static final double DIST_R_D = 1; 
 
   // Angle
-  public static final double ANGLE_L_P = 0.01;
-  public static final double ANGLE_R_P = 0.05;
+  public static final double ANGLE_L_P = 0.1;
+  public static final double ANGLE_R_P = 0.5;
 
   // Arm
   public static final int ARM_ID = 6; // change
@@ -64,8 +64,8 @@ public final class Constants {
   //SparkMax IDS
   public static final int CLAW_ID = 5; //not the correct id
 
-  public static final int LEFT_BRAKE = 7;
-  public static final int RIGHT_BRAKE = 8;
+  public static final int LEFT_BRAKE = 8;
+  public static final int RIGHT_BRAKE = 7;
 
   public static final int LEFT_SERVO = 0;
   public static final int RIGHT_SERVO = 1;

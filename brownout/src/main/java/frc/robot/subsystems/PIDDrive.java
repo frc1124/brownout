@@ -31,7 +31,7 @@ public class PIDDrive extends PIDSubsystem{
     private double totalOut;
     private double kP;
     private boolean isLeft;
-    private double lastAngle = 0;
+    public double lastAngle = 0;
 
     public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP, AHRS navx) {
         super(controllerV);
@@ -42,7 +42,6 @@ public class PIDDrive extends PIDSubsystem{
         this.encoder = encoder;
         this.kP = kP;
         this.navx = navx;
-        navx.reset();
         // navx.reset();
 
         // We need to invert one side of the drivetrain so that positive voltages
@@ -88,17 +87,21 @@ public class PIDDrive extends PIDSubsystem{
     public void useOutputV(double output, double setpoint, double setAngle) {
 
         final double out = controllerV.calculate(encoder.getRate(), setpoint);
-        final double error = setAngle - navx.getAngle() + lastAngle;
-        SmartDashboard.putNumber("Angle Error", error);
-        
+        final double error = setAngle - Math.round(navx.getAngle()*10)/10;
+        SmartDashboard.putNumber("Error", error * kP);
+
         if (isLeft) { 
             totalOut = out + (error * kP);
+            SmartDashboard.putNumber("Left speed", totalOut);
+
         } else {
             totalOut = out - (error * kP);
+            SmartDashboard.putNumber("Right speed", totalOut);
+
         }
         double outFiltered = MathUtil.clamp(totalOut, -8, 8);
         motors.setVoltage(outFiltered);
-        lastAngle=error;
+        //navx.zeroYaw();
     }
     public void useOutputAuto(double speed, double distance) {
         final double out = speed;

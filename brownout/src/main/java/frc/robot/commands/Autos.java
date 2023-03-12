@@ -20,6 +20,12 @@ public final class Autos {
       );
   }
 
+  public static CommandBase defaultAuto() {
+    return Commands.sequence(
+      new TankCommandGroupDistance(10, 30, Robot.rc)
+    );
+  }
+
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
   }

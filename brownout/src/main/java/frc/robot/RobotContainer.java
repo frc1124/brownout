@@ -9,23 +9,22 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmRaise;
 import frc.robot.commands.ArmLower;
 import frc.robot.commands.Autos;
+import frc.robot.commands.BrakeDisable;
 import frc.robot.commands.BrakeStop;
 import frc.robot.commands.BrakeOpen;
 import frc.robot.commands.ClawClose;
 import frc.robot.commands.ClawOpen;
 import frc.robot.commands.EnableVision;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.SolenoidBack;
-import frc.robot.commands.SolenoidFwd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Brake;
 import frc.robot.subsystems.ExampleSubsystem;
 //import frc.robot.subsystems.PIDArm;
 import frc.robot.commands.TankCommandGroup;
 import frc.robot.subsystems.PIDDrive;
-import frc.robot.subsystems.Pneumatics;
+//import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Stabilizer;
-import frc.robot.subsystems.Vision;
+//import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Claw;
 
 import java.util.HashMap;
@@ -87,7 +86,7 @@ public class RobotContainer {
   public final PIDDrive right = new PIDDrive(rights, rightEncoder, rightVController, rightDController, true, Constants.ANGLE_R_P, navx);
 
   // Pneumatics
-  public Pneumatics pneumatics = new Pneumatics();
+  //public Pneumatics pneumatics = new Pneumatics();
 
   public Stabilizer stabilizer = new Stabilizer(navx);
   
@@ -108,7 +107,7 @@ public class RobotContainer {
   public SendableChooser<Command> chooser = new SendableChooser<>(); 
 
   // Vision
-  Vision vision = new Vision();
+  //Vision vision = new Vision();
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -138,8 +137,8 @@ public class RobotContainer {
     logitechMap.put("right button", new JoystickButton(j, 6));
     logitechMap.put("left trigger", new JoystickButton(j, 7));
     logitechMap.put("right trigger", new JoystickButton(j, 8));
-    logitechMap.put("nine", new JoystickButton(j, 9));
-    logitechMap.put("ten", new JoystickButton(j, 10));
+    logitechMap.put("9", new JoystickButton(j, 9));
+    logitechMap.put("10", new JoystickButton(j, 10));
     logitechMap.put("left joystick", new JoystickButton(j, 11));
     logitechMap.put("right joystick", new JoystickButton(j, 12));
 
@@ -152,13 +151,12 @@ public class RobotContainer {
     // getKey("botton left").onTrue(new ArmExtend(0, controllerD, null)); 
     getKey("right trigger").whileTrue(new ArmRaise(arm)); 
     getKey("left trigger").whileTrue(new ArmLower(arm)); 
-    getKey("left button").onTrue(new ClawClose(claw));
-    getKey("right button").onTrue(new ClawOpen(claw));
-    getKey("9").toggleOnTrue(new BrakeStop(brake));
-    getKey("9").toggleOnFalse(new BrakeOpen(brake));
-    getKey("10").toggleOnTrue(new SolenoidFwd(pneumatics));
-    getKey("10").toggleOnFalse(new SolenoidBack(pneumatics));
-    getKey("4").onTrue(new EnableVision(vision));
+    getKey("left button").whileTrue(new ClawClose(claw));
+    getKey("right button").whileTrue(new ClawOpen(claw));
+    getKey("9").whileTrue(new BrakeOpen(brake));
+    getKey("10").toggleOnTrue(new BrakeStop(brake));
+    //getKey("10").toggleOnFalse(new SolenoidBack(pneumatics));
+    getKey("4").onTrue(new BrakeDisable(brake));
 
 
   }

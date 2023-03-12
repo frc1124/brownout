@@ -24,15 +24,20 @@ public class Brake extends SubsystemBase {
     }
 
     public void Stop() {
-        rightBrake.set(2);
-        leftBrake.set(2);
+        rightBrake.set(.9);
+        leftBrake.set(.5);
     }
 
     public void Go() {
         leftServo.setAngle(180);
         rightServo.setAngle(180);
+        
+        rightBrake.set(-.5);
+        leftBrake.set(-.5);
+    }
 
-        rightBrake.set(-2);
-        leftBrake.set(-2);
+    public void stop() {
+        leftBrake.set(0);
+        rightBrake.set(0);
     }
 }

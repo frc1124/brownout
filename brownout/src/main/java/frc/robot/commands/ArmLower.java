@@ -23,7 +23,9 @@ public class ArmLower extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        arm.stop();
+    }
 
     @Override
     public boolean isFinished() {
