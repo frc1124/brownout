@@ -128,13 +128,16 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Left", 0);
     rc.navx.reset();
     rc.stabilizer.reset();
+    CommandScheduler.getInstance().schedule(new DriveCommand )); 
   }
+
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     //SmartDashboard.putNumber("PSI", pressureTransducer.get());
 
+    /*
     double velL = 100 * Math.pow(rc.j.getLeftY(),3); // Speed 
     //double velA=0;
     SmartDashboard.putNumber("Val", rc.j.getRightX());
@@ -166,7 +169,7 @@ public class Robot extends TimedRobot {
     velA, 
     rc
     )); 
-
+*/
     //CommandScheduler.getInstance().schedule(new Stabilize(rc.stabilizer));
   }
 
