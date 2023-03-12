@@ -60,8 +60,8 @@ public class DriveCommand extends CommandBase {
       leftSpeed = (y < 0) ? y - x : y + x;   
     }
 
-    leftSide.useOutputV(leftSpeed, leftSpeed, a);
-    rightSide.useOutputV(rightSpeed, rightSpeed, a);
+    leftSide.setSetpoint( leftSpeed);
+    rightSide.setSetpoint(rightSpeed);
 
     this.lastAngle = calculateWithDeadband(this.navx.getAngle());
    
@@ -76,8 +76,8 @@ public class DriveCommand extends CommandBase {
       }
   
     }
-    leftSide.useOutputV(leftSpeed, leftSpeed, a);
-    rightSide.useOutputV(rightSpeed, rightSpeed, a);
+    leftSide.setSetpoint(leftSpeed);
+    rightSide.setSetpoint(rightSpeed);
 
   }
 
