@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+
+import com.kauailabs.navx.frc.AHRS;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.PIDDrive;
 
@@ -20,6 +22,8 @@ public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private PIDDrive leftSide;
   private PIDDrive rightSide;
+  private AHRS navx;
+  private lastAngle = 0;
  // private PIDController leftController;
 //  private PIDController rightController;
 // TODO Add navx
@@ -28,11 +32,13 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand( PIDDrive leftSide, PIDDrive rightSide){
+  public DriveCommand( PIDDrive leftSide, PIDDrive rightSide, AHRS navx){
     this.leftSide = leftSide;
     this.rightSide = rightSide;
+    this.navx = navx;
     addRequirements(leftSide);
     addRequirements(rightSide);
+    addRequirements(navx);
   }
 
   private calculateWithDeadband(double v, double deadband){
@@ -45,21 +51,40 @@ public class DriveCommand extends CommandBase {
     double y = Math.pow(calculateWithDeadband(rc.j.getLeftY(), 0.1),3);
    
     double a = Math.atan(y/x);
+  
     double leftSpeed = (y == 0) ? x :y;
     double rightSpeed = (y == 0) ? x :y;
     if (x > 0){
-        rightSpeed =(y > 0)  ? y - x : y + x;
+        rightSpeed = (y > 0)  ? y - x : y + x;
     } else if ( x < 0) {
       leftSpeed = (y < 0) ? y - x : y + x;   
     }
 
     leftSide.useOutputV(leftSpeed, leftSpeed, a);
     rightSide.useOutputV(rightSpeed, rightSpeed, a);
+
+    this.lastAngle = calculateWithDeadband(this.navx.getAngle());
+   
+    if (this.lastAngle != a) {
+        // Adjust turn
+        double diff = a - lastAngle;
+        double d = Math.sin(diff);
+        if (d > 0){
+          rightSpeed = (y > 0)  ? y - d : y + d;
+      } else if ( d < 0) {
+        leftSpeed = (y < 0) ? y - d : y + d;   
+      }
+  
+    }
+    leftSide.useOutputV(leftSpeed, leftSpeed, a);
+    rightSide.useOutputV(rightSpeed, rightSpeed, a);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
     side.set(0);
   }
 
