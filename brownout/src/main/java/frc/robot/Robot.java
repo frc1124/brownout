@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Left", 0);
     rc.navx.reset();
     rc.stabilizer.reset();
-    CommandScheduler.getInstance().schedule(new DriveCommand )); 
+    CommandScheduler.getInstance().schedule(new DriveCommand() ); 
   }
 
 

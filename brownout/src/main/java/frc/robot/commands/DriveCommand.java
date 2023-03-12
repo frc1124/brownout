@@ -22,7 +22,7 @@ public class DriveCommand extends CommandBase {
   private PIDDrive rightSide;
  // private PIDController leftController;
 //  private PIDController rightController;
-
+// TODO Add navx
   /**
    * Creates a new ExampleCommand.
    *
@@ -41,16 +41,16 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double x = calculateWithDeadband(rc.j.getRightX(), 0.1);
-    double y = calculateWithDeadband(rc.j.getLeftY(), 0.1);
+    double x = Math.pow(calculateWithDeadband(rc.j.getRightX(), 0.1),3);
+    double y = Math.pow(calculateWithDeadband(rc.j.getLeftY(), 0.1),3);
    
     double a = Math.atan(y/x);
     double leftSpeed = (y == 0) ? x :y;
     double rightSpeed = (y == 0) ? x :y;
     if (x > 0){
-        rightSpeed = y - x;
+        rightSpeed =(y > 0)  ? y - x : y + x;
     } else if ( x < 0) {
-      leftSpeed = y - x;   
+      leftSpeed = (y < 0) ? y - x : y + x;   
     }
 
     leftSide.useOutputV(leftSpeed, leftSpeed, a);

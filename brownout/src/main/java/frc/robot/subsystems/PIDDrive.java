@@ -25,15 +25,13 @@ public class PIDDrive extends PIDSubsystem{
     public final Encoder encoder;
 
     public final MotorControllerGroup motors;
-    public AHRS navx;
     private PIDController controllerD;
     private PIDController controllerV;
     private double totalOut;
     private double kP;
     private boolean isLeft;
-    public double lastAngle = 0;
 
-    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP, AHRS navx) {
+    public PIDDrive(MotorControllerGroup motors, Encoder encoder, PIDController controllerV, PIDController controllerD, boolean isLeft, double kP) {
         super(controllerV);
         this.controllerV = controllerV;
         this.controllerD = controllerD;
@@ -41,8 +39,6 @@ public class PIDDrive extends PIDSubsystem{
         this.isLeft = isLeft;
         this.encoder = encoder;
         this.kP = kP;
-        this.navx = navx;
-        // navx.reset();
 
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
@@ -61,21 +57,11 @@ public class PIDDrive extends PIDSubsystem{
         // encoder.reset();
     }
 
-    public AHRS getNavxInstance() {
-        return navx;
-    }
-
+  
     @Override
     public void useOutput(double output, double setpoint) {
         final double out = controllerD.calculate(encoder.getDistance(), setpoint);
-        final double error = 0 - navx.getAngle();
-
-        if (isLeft) { 
-            totalOut = out + (error * kP);
-        } else {
-            totalOut = out - (error * kP);
-        }
-        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
+        double outFiltered = MathUtil.clamp(out, -8, 8);
         motors.setVoltage(outFiltered);
     }
 
@@ -87,33 +73,23 @@ public class PIDDrive extends PIDSubsystem{
     public void useOutputV(double output, double setpoint, double setAngle) {
 
         final double out = controllerV.calculate(encoder.getRate(), setpoint);
-        final double error = setAngle - Math.round(navx.getAngle()*10)/10;
-        SmartDashboard.putNumber("Error", error * kP);
 
         if (isLeft) { 
-            totalOut = out + (error * kP);
-            SmartDashboard.putNumber("Left speed", totalOut);
+
+            SmartDashboard.putNumber("Left speed", out);
 
         } else {
-            totalOut = out - (error * kP);
-            SmartDashboard.putNumber("Right speed", totalOut);
+
+            SmartDashboard.putNumber("Right speed", out);
 
         }
-        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
+        double outFiltered = MathUtil.clamp(out, -8, 8);
         motors.setVoltage(outFiltered);
         //navx.zeroYaw();
     }
     public void useOutputAuto(double speed, double distance) {
         final double out = speed;
-        final double error = 0 - navx.getAngle();
-        SmartDashboard.putNumber("Angle Error", error);
-        
-        if (isLeft) { 
-            totalOut = out + (error * kP);
-        } else {
-            totalOut = out - (error * kP);
-        }
-        double outFiltered = MathUtil.clamp(totalOut, -8, 8);
+         double outFiltered = MathUtil.clamp(out, -8, 8);
         motors.setVoltage(outFiltered);
     }
 
