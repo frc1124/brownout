@@ -7,12 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.PidDrive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,7 +38,7 @@ import frc.robot.Constants;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static XboxController j;
+  public final XboxController j;
   
   // Gyro 
   private final AHRS navx = new AHRS();
@@ -59,14 +60,16 @@ public class RobotContainer {
   MotorControllerGroup rightGroup = new MotorControllerGroup(rightFront, rightBack);
 
   //encoders
-  public final Encoder leftEncoder = new Encoder(4, 5, false, CounterBase.EncodingType.k4X);
-  public final Encoder rightEncoder = new Encoder(2, 3, true, CounterBase.EncodingType.k4X);
-
-  private final PidDrive leftSide = new PidDrive(leftGroup, leftEncoder, navx, leftVController, false);
-  private final PidDrive rightSide = new PidDrive(rightGroup, rightEncoder, navx, rightVController, true);
+  public Encoder leftEncoder = new Encoder(4, 5, false, CounterBase.EncodingType.k4X);
+  public Encoder rightEncoder = new Encoder(6, 7, true, CounterBase.EncodingType.k4X);
 
 
-  
+  //public final PidDrive leftSide = new PidDrive(leftGroup, `, navx, leftVController, false);
+  //public final PidDrive rightSide = new PidDrive(rightGroup, rightEncoder, navx, rightVController, true);
+
+  // Differential Drive
+  public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
+  public DiffDrive drive = new DiffDrive(differentialDrive);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -74,14 +77,20 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
+
+
+
+
+
     j = new XboxController(0);
     // Configure the trigger bindings
     configureBindings();
   }
 
-  public static HashMap<String, JoystickButton> logitechMap = new HashMap<String, JoystickButton>();
+  public final HashMap<String, JoystickButton> logitechMap = new HashMap<String, JoystickButton>();
 
-  public static JoystickButton getKey(String key) { 
+  public JoystickButton getKey(String key) { 
 
     logitechMap.put("1", new JoystickButton(j, 1));
     logitechMap.put("2", new JoystickButton(j, 2));

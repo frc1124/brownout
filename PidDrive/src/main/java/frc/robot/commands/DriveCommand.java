@@ -4,28 +4,35 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.DiffDrive;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.PidDrive;
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /** An example command that uses an example subsystem. */
-public class Turn extends CommandBase {
+public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final PidDrive side;
-  private double velSetpoint;
-  private double angleSetpoint;
+  private final double xSpeed;
+  private final double zRotation;
+  private final DiffDrive drive;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Turn(PidDrive side, double angleSetpoint, double velSetpoint) {
-    this.side = side;
-    this.velSetpoint = velSetpoint;
-    this.angleSetpoint = angleSetpoint;
+  public DriveCommand(double xSpeed, double zRotation, RobotContainer rc) {
+    drive = rc.drive;
+    this.xSpeed = xSpeed;
+    this.zRotation = zRotation;
+   
+    addRequirements(drive);
 
-    addRequirements(side);
+
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +42,8 @@ public class Turn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    side.turn(angleSetpoint, velSetpoint);
+    drive.arcadeDrive(xSpeed, zRotation);
+
   }
 
   // Called once the command ends or is interrupted.

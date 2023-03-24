@@ -39,4 +39,8 @@ public final class Constants {
   public static final double VEL_R_D = 0.00;
 
   public static final double MAXSPEED = 100; // inches per second
+
+  public static final double TURN_P = 0.01;
+public static final double TURN_I = 0;
+public static final double TURN_D = 0;
 }
